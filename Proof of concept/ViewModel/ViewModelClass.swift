@@ -7,13 +7,11 @@
 //
 
 import Foundation
-
 import UIKit
+import SwiftyJSON
 
 class viewModel {
-    
     private var model = Data()
-    var arr_data = [Data]()
 }
 
 extension viewModel {
@@ -25,16 +23,6 @@ extension viewModel {
         } else {
             return false
         }
-    }
-    
-    func alertViewWithCompletion(alertMsg:String , vc: UIViewController,completion: @escaping () -> Void) {
-        
-        let alertConroller = UIAlertController.init(title: APP_NAME, message: alertMsg, preferredStyle: .alert)
-        let action = UIAlertAction.init(title: "OK", style: .`default`) { (action) in
-            completion()
-        }
-        alertConroller.addAction(action)
-        vc.present(alertConroller, animated: true, completion: nil)
     }
     
     func getAllDataAPI(vc: UIViewController, completion: @escaping ([Data]) -> Void) {
@@ -54,22 +42,26 @@ extension viewModel {
                         if let jsonData = value.data(using: String.Encoding.utf8) {
                            
                             do {
-                                let json = try JSONSerialization.jsonObject(with: jsonData, options: []) as! [String: Any]
+                                let data = try JSONSerialization.jsonObject(with: jsonData, options: []) as! [String: Any]
+                                let json = JSON.init(data)
+                             
                                 DispatchQueue.main.async {
-                                vc.title = json["title"] as? String ?? ""
+                                    vc.title = json["title"].string ?? ""
                                 }
-                                if let arr = json["rows"] as? [[String : Any]]  {
+                                
+                                if let arr = json["rows"].array  {
                                     
+                                    var arr_data = [Data]()
+
                                     for item in arr {
                                         
-                                        self.model.title = item["title"] as? String ?? "N/A"
-                                        self.model.description = item["description"] as? String ?? "N/A"
-                                        self.model.imageHref = item["imageHref"] as? String ?? "N/A"
+                                        self.model.title = item["title"].string ?? "N/A"
+                                        self.model.description = item["description"].string ?? "N/A"
+                                        self.model.imageHref = item["imageHref"].string ?? ""
                                         
-                                        self.arr_data.append(self.model)
-                                        
-                                        completion(self.arr_data)
+                                        arr_data.append(self.model)
                                     }
+                                    completion(arr_data)
                                 }
                                 
                             } catch {
@@ -79,8 +71,8 @@ extension viewModel {
                     }
                     
                 } else {
-                    self.alertViewWithCompletion(alertMsg: MSG_ERROR, vc: vc, completion: {})
-                    print("Request failed with error: \(err)")
+                    alertViewWithCompletion(alertMsg: MSG_ERROR, vc: vc, completion: {})
+                    print("Request failed with error: \(err!)")
                 }
                 }.resume()
         }

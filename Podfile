@@ -7,7 +7,8 @@ target 'Proof of concept' do
 
   # Pods for Proof of concept
 
-pod 'SnapKit'
-pod 'SDWebImage'
+pod 'SnapKit', '~> 4.0.1'
+pod 'SDWebImage', '~> 4.4.3'
+pod 'SwiftyJSON', '~> 4.2.0'
 
 end
