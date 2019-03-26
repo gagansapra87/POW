@@ -31,6 +31,11 @@ class ViewController: UIViewController {
     
     func setupTableView() {
         
+        /*
+         Set tabelview frames and add in viewcontroller content view.
+         Setup the tableview like register nib and add refresher.
+         */
+        
         self.tableView.register(TableViewCell.self, forCellReuseIdentifier: textCellIndetifier)
         self.tableView.tableFooterView = UIView.init(frame: CGRect.zero)
         
@@ -52,6 +57,10 @@ class ViewController: UIViewController {
     //MARK: GetListAPI
     
     @objc private func getListAPI() {
+        
+        /*
+         Call the api methods and add the data in array.
+         */
         
         viewModelClass.getAllDataAPI(vc: self) { (data) in
             DispatchQueue.main.async {

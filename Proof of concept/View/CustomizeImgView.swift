@@ -13,6 +13,11 @@ class CustomizeImgView : UIImageView {
     let imageCache = NSCache<AnyObject, AnyObject>()
     
     func cacheImage(urlString: String){
+        
+        /*
+         cache the image in disk.
+         */
+        
         let url = URL(string: urlString)
         
         image = nil

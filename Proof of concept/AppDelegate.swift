@@ -23,6 +23,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     //MARK: SetRootViewContoller
     
     func setRootViewController() {
+        
+        /*
+         intialise viewcontroller
+         */
      
         window = UIWindow(frame: UIScreen.main.bounds)
         let vc = ViewController() as UIViewController

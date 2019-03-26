@@ -26,6 +26,10 @@ class TableViewCell: UITableViewCell {
     
     func initViews() {
         
+        /*
+         Add image view and label in cell's content view and setup constraints
+         */
+        
         self.contentView.addSubview(self.imgView_item)
         self.contentView.addSubview(self.lbl_title)
         self.contentView.addSubview(self.lbl_subTitle)
@@ -34,14 +38,12 @@ class TableViewCell: UITableViewCell {
             make.top.equalTo(self.contentView).offset(10)
             make.left.equalTo(self.contentView).offset(10)
             make.right.equalTo(self.contentView).offset(-20)
-//            make.bottomMargin.equalTo(self.lbl_title).offset(-30)
         }
         
         self.lbl_title.snp.makeConstraints { (make) in
             make.left.equalTo(self.imgView_item)
             make.right.equalTo(self.imgView_item)
             make.top.equalTo(self.imgView_item.snp.bottomMargin).offset(20)
-//            make.bottomMargin.equalTo(self.lbl_subTitle.snp.topMargin)
         }
         
         self.lbl_subTitle.snp.makeConstraints { (make) in

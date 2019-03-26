@@ -18,6 +18,10 @@ extension viewModel {
     
     func internetAvailable () -> Bool {
         
+        /*
+         check the internet availablity
+         */
+        
         if isConnectedToNetwork() {
             return true
         } else {
@@ -26,6 +30,11 @@ extension viewModel {
     }
     
     func getAllDataAPI(vc: UIViewController, completion: @escaping ([Data]) -> Void) {
+        
+        /*
+         Hit the post api and get data from server also shows success, failure and internet avaialbilty alertviews.
+         */
+
         
         if  internetAvailable() == false {
             alertViewWithCompletion(alertMsg: INTERNET_CONNECTION, vc: vc, completion: {})

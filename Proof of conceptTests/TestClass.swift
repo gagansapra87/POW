@@ -12,6 +12,10 @@ class TestClass: XCTestCase {
     
     func testApiDataForStatusCode() {
         
+        /*
+         check for the current response of api and success status code 200.
+         */
+        
         let urlString = URL(string: API_URL)
         let promise = expectation(description: "Success status code = 200")
         if !isConnectedToNetwork() {
