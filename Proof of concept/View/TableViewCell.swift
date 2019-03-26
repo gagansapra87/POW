@@ -33,7 +33,7 @@ class TableViewCell: UITableViewCell {
         self.imgView_item.snp.makeConstraints { (make) -> Void in
             make.top.equalTo(self.contentView).offset(10)
             make.left.equalTo(self.contentView).offset(10)
-            make.right.equalTo(self.contentView).offset(20)
+            make.right.equalTo(self.contentView).offset(-20)
 //            make.bottomMargin.equalTo(self.lbl_title).offset(-30)
         }
         
