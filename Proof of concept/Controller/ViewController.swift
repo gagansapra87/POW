@@ -52,8 +52,20 @@ class ViewController: UIViewController {
         
         tableView.delegate = self
         tableView.dataSource = self
+        
     }
     
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+      
+        if UIDevice.current.orientation.isLandscape{
+             setupTableView()
+            print("landscape")
+        } else {
+             setupTableView()
+            print("portrait")
+        }
+        
+    }
     //MARK: GetListAPI
     
     @objc private func getListAPI() {
@@ -70,6 +82,42 @@ class ViewController: UIViewController {
             }
         }
     }
+    func tableCell(cellForRowAt indexPath: IndexPath, cell:TableViewCell){
+        
+        let model = arr_data[indexPath.row]
+        if model.imageHref.isEmpty == false {
+            
+            let urlString  = URL.init(string: model.imageHref)
+            
+            cell.imgView_item.sd_setIndicatorStyle(.white)
+            cell.imgView_item.sd_setShowActivityIndicatorView(true)
+            
+            cell.imgView_item.sd_setImage(with: urlString) { (loadedImage, error, cacheType, url) in
+                
+                cell.imgView_item.sd_removeActivityIndicator()
+                
+                if error != nil {
+                    print("Error code: \(error!.localizedDescription)")
+                    cell.imgView_item.image = nil
+                } else {
+                    cell.imgView_item.image = loadedImage
+                    
+                    self.tableView.beginUpdates()
+                    self.tableView.reloadRows(at: self.tableView.indexPathsForVisibleRows!, with: .none)
+                    self.tableView.endUpdates()
+                }
+            }
+        } else {
+            cell.imgView_item.image = nil
+        }
+        
+        cell.lbl_subTitle.numberOfLines = 0
+        cell.lbl_title.numberOfLines = 0
+        cell.imgView_item.contentMode = .scaleAspectFit
+        cell.selectionStyle =  .none
+        cell.lbl_title.text = model.title
+        cell.lbl_subTitle.text = model.description
+    }
 }
 
 extension ViewController: UITableViewDataSource, UITableViewDelegate {
@@ -80,44 +128,10 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) ->
         UITableViewCell {
-
+            
             let cell = tableView.dequeueReusableCell(withIdentifier: textCellIndetifier, for: indexPath) as! TableViewCell
-            let model = arr_data[indexPath.row]
-            
-            if model.imageHref.isEmpty == false {
-               
-                let urlString  = URL.init(string: model.imageHref)
-                
-                cell.imgView_item.sd_setIndicatorStyle(.white)
-                cell.imgView_item.sd_setShowActivityIndicatorView(true)
-                
-                cell.imgView_item.sd_setImage(with: urlString) { (loadedImage, error, cacheType, url) in
-                    
-                    cell.imgView_item.sd_removeActivityIndicator()
-                    
-                    if error != nil {
-                        print("Error code: \(error!.localizedDescription)")
-                        cell.imgView_item.image = nil
-                    } else {
-                        cell.imgView_item.image = loadedImage
-                        
-                        self.tableView.beginUpdates()
-                        self.tableView.reloadRows(at: self.tableView.indexPathsForVisibleRows!, with: .none)
-                        self.tableView.endUpdates()
-                    }
-                }
-            } else {
-                cell.imgView_item.image = nil
-            }
-  
-            cell.lbl_subTitle.numberOfLines = 0
-            cell.lbl_title.numberOfLines = 0
-            cell.imgView_item.contentMode = .scaleAspectFit
-            cell.selectionStyle =  .none
-
-            cell.lbl_title.text = model.title
-            cell.lbl_subTitle.text = model.description
-            
+         
+                tableCell(cellForRowAt: indexPath, cell: cell)
             return cell
     }
     
